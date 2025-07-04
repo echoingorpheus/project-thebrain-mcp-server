@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative '../lib/thebrain_mcp_server'
+
+# Configure the server from environment variables
+ThebrainMcpServer.configure do |config|
+  config.thebrain_api_url = ENV['THEBRAIN_API_URL'] || 'https://api.thebrain.com'
+  config.thebrain_api_key = ENV.fetch('THEBRAIN_API_KEY', nil)
+  config.thebrain_brain_id = ENV.fetch('THEBRAIN_BRAIN_ID', nil)
+  config.log_level = ENV['LOG_LEVEL']&.to_sym || :info
+  config.timeout = ENV['TIMEOUT']&.to_i || 30
+  config.retry_attempts = ENV['RETRY_ATTEMPTS']&.to_i || 3
+  config.cache_ttl = ENV['CACHE_TTL']&.to_i || 300
+  config.max_search_results = ENV['MAX_SEARCH_RESULTS']&.to_i || 50
+end
+
+# Start the server
+begin
+  server = ThebrainMcpServer::Server.new
+  server.start
+rescue ThebrainMcpServer::ConfigurationError => e
+  puts "Configuration error: #{e.message}"
+  puts 'Please set THEBRAIN_API_KEY and THEBRAIN_BRAIN_ID environment variables'
+  exit 1
+rescue StandardError => e
+  puts "Failed to start server: #{e.message}"
+  exit 1
+end
