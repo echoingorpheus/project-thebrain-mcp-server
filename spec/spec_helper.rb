@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Load test environment
+ENV['RUBY_ENV'] = 'test'
+
 require 'simplecov'
 require 'simplecov-console'
 
@@ -52,15 +55,17 @@ RSpec.configure do |config|
   config.order = :random
   Kernel.srand config.seed
 
-  # Configure ThebrainMcpServer for testing
+  # Configure ThebrainMcpServer for testing with test values
   config.before(:suite) do
     ThebrainMcpServer.configure do |server_config|
-      server_config.thebrain_api_url = 'https://test.example.com'
+      server_config.thebrain_api_url = 'http://test.example.com'
       server_config.thebrain_api_key = 'test-api-key'
       server_config.thebrain_brain_id = 'test-brain-id'
       server_config.log_level = :debug
       server_config.timeout = 5
       server_config.retry_attempts = 1
+      server_config.cache_ttl = 60
+      server_config.max_search_results = 10
     end
   end
 end

@@ -4,20 +4,27 @@ require 'zeitwerk'
 require 'json'
 require 'logger'
 require 'dry-configurable'
+require 'dry/logger'
+
+# Load environment variables in development/test
+if %w[development test].include?(ENV['RUBY_ENV'] || 'development')
+  require 'dotenv'
+  Dotenv.load
+end
 
 # Main module for TheBrain MCP Server
 module ThebrainMcpServer
   extend Dry::Configurable
 
-  # Configure default settings
-  setting :thebrain_api_url, default: 'https://api.thebrain.com'
-  setting :thebrain_api_key, default: nil
-  setting :thebrain_brain_id, default: nil
-  setting :log_level, default: :info
-  setting :timeout, default: 30
-  setting :retry_attempts, default: 3
-  setting :cache_ttl, default: 300
-  setting :max_search_results, default: 50
+  # Configure default settings with environment variable fallbacks
+  setting :thebrain_api_url, default: ENV.fetch('THEBRAIN_API_URL', 'http://localhost:8080')
+  setting :thebrain_api_key, default: ENV.fetch('THEBRAIN_API_KEY', nil)
+  setting :thebrain_brain_id, default: ENV.fetch('THEBRAIN_BRAIN_ID', nil)
+  setting :log_level, default: (ENV['LOG_LEVEL'] || 'info').to_sym
+  setting :timeout, default: (ENV['TIMEOUT'] || '30').to_i
+  setting :retry_attempts, default: (ENV['RETRY_ATTEMPTS'] || '3').to_i
+  setting :cache_ttl, default: (ENV['CACHE_TTL'] || '300').to_i
+  setting :max_search_results, default: (ENV['MAX_SEARCH_RESULTS'] || '50').to_i
 
   # Setup Zeitwerk autoloader
   loader = Zeitwerk::Loader.for_gem
