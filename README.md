@@ -25,6 +25,16 @@ TheBrain is a powerful visual knowledge management platform trusted by major org
 
 This project represents a significant step forward in making personal knowledge management systems truly intelligent and interactive. By implementing the Model Context Protocol specification, it enables bidirectional communication between AI models and TheBrain, allowing for sophisticated operations like semantic search, thought creation, relationship management, and content analysis. The server's modular Ruby architecture ensures reliability, performance, and extensibility while maintaining the security and privacy standards expected for personal knowledge management systems.
 
+<br/>
+
+<div align="center">
+  <a href="https://enogrob.github.io/thebrain/mcp/2025/05/15/thebrain-mcp-server.html" target="_blank">
+    <img src="images/thebrain-mcp-server.png" alt="The Vision: Making TheBrain Smarter with a MCP Server">
+  </a>
+</div>
+
+<br/>
+
 ### Architecture
 
 The TheBrain MCP Server implements a sophisticated multi-layered architecture that seamlessly connects AI assistants with TheBrain's knowledge management ecosystem through the standardized Model Context Protocol.
